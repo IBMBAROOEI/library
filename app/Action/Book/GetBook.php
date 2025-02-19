@@ -11,10 +11,10 @@ class GetBook{
 
 
 
- public function handel(int $id):Book{
+ public function handel(Book $book):Book{
 
 
 
-     return Book::findOrFail($id);
+     return  $book;
  }
 }
