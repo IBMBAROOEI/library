@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Data;
+namespace App\Action\Data;
 
 
 use App\BookStatus;
