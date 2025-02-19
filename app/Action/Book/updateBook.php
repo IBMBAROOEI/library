@@ -10,10 +10,10 @@ use App\Models\Book;
 class UpdateBook{
 
 
-     public function handel(int $id,BookData $bookData):Book{
+     public function handel(Book $book,BookData $bookData):Book{
 
- $book=Book::find($id);
- return  $book->update($bookData->toArray());
+  $book->update($bookData->toArray());
+   return $book;
 
 
      }
