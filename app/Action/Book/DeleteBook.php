@@ -11,9 +11,9 @@
 
 
 
-     public function handel(int $id): void{
+     public function handel(Book $book): void{
 
-$book=Book::findOrFail($id);
+
 $book->delete();
      }
  }
