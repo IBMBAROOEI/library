@@ -73,7 +73,7 @@ $book=$this->listBook->handel();
 
 try{
 
-$data=BookData::from($request->all());
+$data=BookData::from($request->validated());
 
 $book=$this->createBook->handle($data);
 return response()->json([
@@ -109,4 +109,106 @@ catch(ValidationException $e){
 
     }
     }
+
+
+
+ public function show(Book $book):JsonResponse{
+
+
+try{
+$book=$this->getBook->handel($book);
+return  response()->json([
+
+
+'message'=>'ok',
+'status'=>true,
+'data'=>BookResource::collection($book),
+],200);
+
+
+}
+catch(\Exception $e){
+return  response()->json([
+
+
+'message'=>'not found',
+'status'=>true,
+
+'errors'=>$e->getMessage()],500);
+
+}
+
+}
+
+
+
+public function update(Request $request, Book $book): JsonResponse{
+
+
+
+
+try{
+            $data = BookData::from($request->validated());
+
+            $book = $this->updateBook->handel($book,$data);
+return response()->json([
+'message'=>'book update',
+'status'=>true,
+'data'=>BookResource::collection($book),
+
+],200);
+
+
+}
+catch(ValidationException $e){
+
+
+    return response()->json([
+'message'=>'validate error',
+'status'=>false,
+'errors'=>$e->validator->errors()->toArray(),
+
+],422);
+
+    }
+
+    catch(\Exception $e){
+
+
+    return response()->json([
+'message'=>'error',
+'status'=>false,
+'errors'=>$e->getMessage()
+
+],500);
+
+    }
+
+
+}
+
+
+
+public function destroy(Book $book): JsonResponse{
+
+    try{
+
+$this->deleteBook->handel($book);
+
+return response()->json([204]);
+
+    }catch(\Exception $e){
+
+
+
+    return response()->json([
+'message'=>'error',
+'status'=>false,
+'errors'=>$e->getMessage()
+
+],500);
+
+
+    }
+}
 }
