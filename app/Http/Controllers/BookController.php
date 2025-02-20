@@ -10,7 +10,8 @@ use App\Action\Book\UpdateBook;
 use App\Action\Data\BookData;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
-use Illuminate\Validation\ValidationException;
+// use Illuminate\Validation\ValidationException;
+use Spatie\LaravelData\Exceptions\ValidationException;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -69,39 +70,33 @@ $book=$this->listBook->handel();
 
 
 
-    public function store(Request $request): JsonResponse{
+    public function store( BookData $bookData): JsonResponse{
 
 try{
 
-$data=BookData::from($request->validated());
 
-$book=$this->createBook->handle($data);
+$book=$this->createBook->handle($bookData);
+
 return response()->json([
 'message'=>'book creted',
 'status'=>true,
-'data'=>BookResource::collection($book),
+'data'=> new BookResource($book),
 
 ],201);
 
 
-}
-catch(ValidationException $e){
-
-
-    return response()->json([
-'message'=>'validate error',
-'status'=>false,
-'errors'=>$e->validator->errors()->toArray(),
-
-],422);
-
-    }
+} catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'خطا در اعتبارسنجی داده‌ها',
+                'errors' => $e->getErrors(), // دریافت پیام‌های خطا
+            ], 422);
+        }
 
     catch(\Exception $e){
 
 
     return response()->json([
-'message'=>'error',
+'message'=>'errors',
 'status'=>false,
 'errors'=>$e->getMessage()
 

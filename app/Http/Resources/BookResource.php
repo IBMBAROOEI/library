@@ -30,14 +30,14 @@ class BookResource extends JsonResource
 
 
 
-   
+
    private function getReadableType():string{
-        
+
 return match($this->type){
 BookStatus::Active->value=>'active',
 
 BookStatus::Deactive->value=>'dactive',
-
+            default => 'unknown',
 };
 
    }

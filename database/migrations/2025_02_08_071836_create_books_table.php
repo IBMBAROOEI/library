@@ -17,10 +17,11 @@ return new class extends Migration
             $table->string('title');
             $table->string('author');
 
-            
-            $table->text('description');
-            $table->enum('type',BookStatus::types())->default(BookStatus::Deactive->value);
-            $table->decimal(10,3);
+
+            $table->text('description')->nullable();
+            $table->enum('type', array_map(fn($status) => $status->value, BookStatus::types()))
+                ->default(BookStatus::Deactive->value);
+            $table->decimal('price', 10, 3);
             $table->date('published_at');
                        $table->timestamps();
         });
