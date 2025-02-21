@@ -19,8 +19,12 @@ return new class extends Migration
 
 
             $table->text('description')->nullable();
-            $table->enum('type', array_map(fn($status) => $status->value, BookStatus::types()))
-                ->default(BookStatus::Deactive->value);
+
+
+
+            $table->enum('type',array_column(BookStatus::cases(),column_key: 'value'))->default('active');
+
+
             $table->decimal('price', 10, 3);
             $table->date('published_at');
                        $table->timestamps();

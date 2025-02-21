@@ -19,4 +19,7 @@ class Book extends Model
         'published_at'=>'date',
     ];
 
+
+    
+
 }

@@ -6,13 +6,9 @@ enum BookStatus :string
 {
 
 
+    case Active = 'active';
+    case Deactive = 'deactive';
 
-    case Active ='active';
-    case  Deactive='deactive';
 
-    public static function types(): array
-    {
-        return [self::Active, self::Deactive];
-    }
 
 }

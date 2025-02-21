@@ -2,6 +2,7 @@
 
 namespace App\Action\Data;
 
+use App\BookStatus;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\Validation;
@@ -23,6 +24,10 @@ class BookData extends Data
 
         #[Validation('required|numeric')]
         public float $price,
+
+
+		#[Validation('in:' . BookStatus::Active->value . ',' . BookStatus::Deactive->value)]
+		public ?string $type = BookStatus::Active->value
     ) {}
 
     // برای تعریف قوانین و پیام‌های خطا
@@ -34,7 +39,9 @@ class BookData extends Data
             'description' => 'nullable|string',
             'published_at' => 'required|date',
             'price' => 'required|numeric',
-        ];
+			'type' => 'in:' . BookStatus::Active->value . ',' . BookStatus::Deactive->value,
+
+		];
     }
 
     public static function messages(): array
@@ -47,6 +54,7 @@ class BookData extends Data
             'published_at.date' => 'تاریخ انتشار باید یک تاریخ معتبر باشد.',
             'price.required' => 'قیمت باید مشخص شود و نمی‌تواند خالی باشد.',
             'price.numeric' => 'قیمت باید یک عدد باشد.',
+			'type.in'=>'نوع کتاب را مشخص کنید '
         ];
     }
 }
