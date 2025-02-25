@@ -15,6 +15,10 @@ use Spatie\LaravelData\Exceptions\ValidationException;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 
 /**
@@ -53,18 +57,36 @@ class BookController extends Controller
 
 
 
-    public function index():JsonResponse{
+
+    public function index(){
+    Cache::forget('8');
+
+if (Cache::has('8')) {
+ Log::info('ok');
+     $value=Cache::get('8');
+ dd($value);
+
+} else {
+    Cache::put('8', 'value', 2000);
+
+ Log::info("not exit");
+}
 
 
-$book=$this->listBook->handel();
-        return response()->json([
-"message"=>"ok",
-"status"=>true,
-"data"=>BookResource::collection($book),
 
-        ],200);
+
+
     }
 
+    
+
+// $book=$this->listBook->handel();
+//         return response()->json([
+// "message"=>"ok",
+// "status"=>true,
+// "data"=>$book,
+
+//         ],200);
 
 
 
