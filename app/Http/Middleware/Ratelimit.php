@@ -24,7 +24,7 @@ class Ratelimit
 
    $key="user_attempts:{$ipAddres}";
 
-   $attempts=(int)Redis::get($key)??0;
+        $attempts = (int) Redis::connection('user_attempts')->get($key) ?? 0;
 
     if($attempts>=5){
          return response()->json(['message'=>'many request'
@@ -32,8 +32,8 @@ class Ratelimit
          ],429);
     }
 
-    Redis::set($key,++$attempts);
-    Redis::expire($key,3600);
+    Redis::connection('user_attempts')->set($key, ++$attempts);
+        Redis::connection('user_attempts')->expire($key, 3600);  
 
         return $next($request);
     }

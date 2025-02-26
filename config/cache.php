@@ -77,6 +77,12 @@ return [
             'lock_connection' => env('REDIS_CACHE_LOCK_CONNECTION', 'default'),
         ],
 
+        'user_attempts' => [ // می‌توانید این را به عنوان یک کش جداگانه برای IP کاربران در نظر بگیرید
+        'driver' => 'redis',
+        'connection' => 'user_attempts', // اتصال به پایگاه داده 1
+        'lock_connection' => 'user_attempts',
+    ],
+
         'dynamodb' => [
             'driver' => 'dynamodb',
             'key' => env('AWS_ACCESS_KEY_ID'),
