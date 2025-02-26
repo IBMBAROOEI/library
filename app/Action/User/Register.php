@@ -4,6 +4,7 @@
 use App\Action\Data\UserData;
 use App\Model\User;
 use App\Models\User as ModelsUser;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Support\Facades\Hash;
 
   class Register{

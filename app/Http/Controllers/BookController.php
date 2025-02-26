@@ -85,12 +85,7 @@ return response()->json([
 ],201);
 
 
-} catch (ValidationException $e) {
-            return response()->json([
-                'message' => 'خطا در اعتبارسنجی داده‌ها',
-                'errors' => $e->getErrors(), // دریافت پیام‌های خطا
-            ], 422);
-        }
+} 
 
     catch(\Exception $e){
 
