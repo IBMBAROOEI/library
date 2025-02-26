@@ -11,9 +11,7 @@ class createBook
     {
  $data=$bookData->toArray();
 
-        // if (empty($data['type'])) {
-        //     $data['type'] = BookStatus::Deactive->value;
-        // }
+        
         return Book::create($data);
     }
 }
