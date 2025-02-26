@@ -11,36 +11,28 @@ use Spatie\LaravelData\Attributes\Validation;
 
 
  public function __construct(
-        #[Validation('required|string|max:255')]
-        public string $title,
+        #[Validation('required|email|')]
+        public string $email,
 
-        #[Validation('required|string|max:255')]
-        public string $author,
+        #[Validation('required|string|max:9|regex:/
+        [a-z]/regex:[A-Z]/|regex:/[0-9]
+        /|regex:/[@$!%*?&]/')]
+        public string $password,
 
-        #[Validation('nullable|string')]
-        public ?string $description,
-
-        #[Validation('required|date')]
-        public string $published_at, // Changed to string to match validation
-
-        #[Validation('required|numeric')]
-        public float $price,
-
-
-		#[Validation('in:' . BookStatus::Active->value . ',' . BookStatus::Deactive->value)]
-		public ?string $type = BookStatus::Active->value
     ) {}
 
     // برای تعریف قوانین و پیام‌های خطا
     public static function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
-            'author' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'published_at' => 'required|date',
-            'price' => 'required|numeric',
-			'type' => 'in:' . BookStatus::Active->value . ',' . BookStatus::Deactive->value,
+            'email' => 'required|email',
+            'password' => ['required|max:8',
+            'string',
+            'regex:/[a-z]/',
+            'regex:/[A-Z]/',
+            'regex:/[0-9]/',
+            'regex:/[@$!%*?&]/',
+            ]
 
 		];
     }
@@ -48,14 +40,14 @@ use Spatie\LaravelData\Attributes\Validation;
     public static function messages(): array
     {
         return [
-            'title.required' => 'عنوان کتاب الزامی است و نباید خالی باشد.',
-            'author.required' => 'نویسنده کتاب الزامی است و نباید خالی باشد.',
-            'description.string' => 'توضیحات باید یک متن باشد.',
-            'published_at.required' => 'تاریخ انتشار الزامی است.',
-            'published_at.date' => 'تاریخ انتشار باید یک تاریخ معتبر باشد.',
-            'price.required' => 'قیمت باید مشخص شود و نمی‌تواند خالی باشد.',
-            'price.numeric' => 'قیمت باید یک عدد باشد.',
-			'type.in'=>'نوع کتاب را مشخص کنید '
+           'email.required'=>'ایملیل الزامی است',
+           'email.required'=>'ایملیل الزامی است',
+           'password.required'=>'رمز عبور الزامی است ',
+         'password.min'=>'رمز عبور باید 8کاراکتر باشد  ',
+            'password.regex' => 'رمز عبور باید حداقل یک حرف بزرگ، یک حرف کوچک، یک عدد، و یک کاراکتر ویژه شامل شود.',
+
+
+
         ];
     }
 
