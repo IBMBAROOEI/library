@@ -33,7 +33,7 @@ class Ratelimit
     }
 
     Redis::connection('user_attempts')->set($key, ++$attempts);
-        Redis::connection('user_attempts')->expire($key, 3600);  
+        Redis::connection('user_attempts')->expire($key, 60);
 
         return $next($request);
     }
