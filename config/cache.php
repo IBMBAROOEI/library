@@ -83,6 +83,13 @@ return [
         'lock_connection' => 'user_attempts',
     ],
 
+   'REDIS_log_DB' => [ // می‌توانید این را به عنوان یک کش جداگانه برای IP کاربران در نظر بگیرید
+        'driver' => 'redis',
+        'connection' => 'REDIS_log_DB', // اتصال به پایگاه داده 1
+        'lock_connection' => 'REDIS_log_DB',
+    ],
+
+
         'dynamodb' => [
             'driver' => 'dynamodb',
             'key' => env('AWS_ACCESS_KEY_ID'),
