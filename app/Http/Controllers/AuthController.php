@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Action\Data\UserData;
+use App\Action\User\Login;
 use App\Action\User\Register;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -18,10 +20,45 @@ class AuthController extends Controller
  public function __construct(
 
     protected Register $register,
+    protected Login $login,
 
 
 
     ){}
+
+
+
+public function login(UserData $userdata){
+$user=$this->login->handel($userdata);
+
+if(!$user){
+      return response()->json([
+                'message' => 'Invalid credentials',
+            ], Response::HTTP_UNAUTHORIZED);
+}
+else{
+
+    $userr=Auth::guard('api')->user();
+
+    $token=JWTaUTH::FROMuSER($userr);
+
+
+        return response()->json([
+            'message'=>'user login',
+'status'=>true,
+'data'=> new UserResource($userr),
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            'refresh_token' => Auth::refresh(),
+
+        ]);
+}
+
+}
+
+
+
 
      public function register(UserData $userdata){
 
