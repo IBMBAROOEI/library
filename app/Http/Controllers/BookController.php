@@ -85,7 +85,7 @@ return response()->json([
 ],201);
 
 
-} 
+}
 
     catch(\Exception $e){
 
@@ -102,103 +102,103 @@ return response()->json([
 
 
 
- public function show(Book $book):JsonResponse{
+//  public function show(Book $book):JsonResponse{
 
 
-try{
-$book=$this->getBook->handel($book);
-return  response()->json([
+// try{
+// $book=$this->getBook->handel($book);
+// return  response()->json([
 
 
-'message'=>'ok',
-'status'=>true,
-'data'=>BookResource::collection($book),
-],200);
+// 'message'=>'ok',
+// 'status'=>true,
+// 'data'=>BookResource::collection($book),
+// ],200);
 
 
-}
-catch(\Exception $e){
-return  response()->json([
+// }
+// catch(\Exception $e){
+// return  response()->json([
 
 
-'message'=>'not found',
-'status'=>true,
+// 'message'=>'not found',
+// 'status'=>true,
 
-'errors'=>$e->getMessage()],500);
+// 'errors'=>$e->getMessage()],500);
 
-}
+// }
 
-}
-
-
-
-public function update(Request $request, Book $book): JsonResponse{
+// }
 
 
 
-
-try{
-            $data = BookData::from($request->validated());
-
-            $book = $this->updateBook->handel($book,$data);
-return response()->json([
-'message'=>'book update',
-'status'=>true,
-'data'=>BookResource::collection($book),
-
-],200);
-
-
-}
-catch(ValidationException $e){
-
-
-    return response()->json([
-'message'=>'validate error',
-'status'=>false,
-'errors'=>$e->validator->errors()->toArray(),
-
-],422);
-
-    }
-
-    catch(\Exception $e){
-
-
-    return response()->json([
-'message'=>'error',
-'status'=>false,
-'errors'=>$e->getMessage()
-
-],500);
-
-    }
-
-
-}
+// public function update(Request $request, Book $book): JsonResponse{
 
 
 
-public function destroy(Book $book): JsonResponse{
 
-    try{
+// try{
+//             $data = BookData::from($request->validated());
 
-$this->deleteBook->handel($book);
+//             $book = $this->updateBook->handel($book,$data);
+// return response()->json([
+// 'message'=>'book update',
+// 'status'=>true,
+// 'data'=>BookResource::collection($book),
 
-return response()->json([204]);
-
-    }catch(\Exception $e){
-
-
-
-    return response()->json([
-'message'=>'error',
-'status'=>false,
-'errors'=>$e->getMessage()
-
-],500);
+// ],200);
 
 
-    }
-}
+// }
+// catch(ValidationException $e){
+
+
+//     return response()->json([
+// 'message'=>'validate error',
+// 'status'=>false,
+// 'errors'=>$e->validator->errors()->toArray(),
+
+// ],422);
+
+//     }
+
+//     catch(\Exception $e){
+
+
+//     return response()->json([
+// 'message'=>'error',
+// 'status'=>false,
+// 'errors'=>$e->getMessage()
+
+// ],500);
+
+//     }
+
+
+// }
+
+
+
+// public function destroy(Book $book): JsonResponse{
+
+//     try{
+
+// $this->deleteBook->handel($book);
+
+// return response()->json([204]);
+
+//     }catch(\Exception $e){
+
+
+
+//     return response()->json([
+// 'message'=>'error',
+// 'status'=>false,
+// 'errors'=>$e->getMessage()
+
+// ],500);
+
+
+//     }
+// }
 }

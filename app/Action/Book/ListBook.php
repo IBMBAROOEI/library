@@ -9,9 +9,9 @@ class ListBook {
     public function handel() {
 
 $book=Cache::remember('books',180,function(){
-
  return Book::all();
 });
+
 
 
      return $book;

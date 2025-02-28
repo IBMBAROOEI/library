@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\Ratelimit;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
            'Ratelimit'=>Ratelimit::class,
+           'AuthMiddleware'=>AuthMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
