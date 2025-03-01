@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Log\Logger;
+use App\log\log;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -31,7 +32,7 @@ class AuthController extends Controller
 
 public function login(UserData $userdata){
 $user=$this->login->handel($userdata);
-Logger::log('warnin')
+
 if(!$user){
 
 
