@@ -17,13 +17,21 @@ class BookData extends Data
         public string $author,
 
         #[Validation('nullable|string')]
-        public ?string $description,
+        public ?string $description = null,
 
         #[Validation('required|date')]
-        public string $published_at, // Changed to string to match validation
-
-        #[Validation('required|numeric')]
+        public string $published_at,
+        #[Validation('required|numeric|min:0')]
         public float $price,
+
+        #[Validation('required|integer|min:0')]
+        public int $stock_quantity = 0,
+
+        #[Validation('nullable|string')]
+        public ?string $language = null,
+
+        #[Validation('nullable|integer')]
+        public ?int $page_count = null,
 
 
 		#[Validation('in:' . BookStatus::Active->value . ',' . BookStatus::Deactive->value)]
@@ -38,7 +46,10 @@ class BookData extends Data
             'author' => 'required|string|max:255',
             'description' => 'nullable|string',
             'published_at' => 'required|date',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0',
+            'stock_quantity' => 'required|integer|min:0',
+            'language' => 'nullable|string', // می‌تواند یک رشته خیالی باشد
+            'page_count' => 'nullable|integer|min:0', // تعداد صفحات می‌تواند منفی نباشد
 			'type' => 'in:' . BookStatus::Active->value . ',' . BookStatus::Deactive->value,
 
 		];
@@ -54,7 +65,14 @@ class BookData extends Data
             'published_at.date' => 'تاریخ انتشار باید یک تاریخ معتبر باشد.',
             'price.required' => 'قیمت باید مشخص شود و نمی‌تواند خالی باشد.',
             'price.numeric' => 'قیمت باید یک عدد باشد.',
-			'type.in'=>'نوع کتاب را مشخص کنید '
+            'price.min' => 'قیمت نمی‌تواند منفی باشد.',
+            'stock_quantity.required' => 'مقدار موجودی الزامی است.',
+            'stock_quantity.integer' => 'مقدار موجودی باید یک عدد صحیح باشد.',
+            'stock_quantity.min' => 'مقدار موجودی نمی‌تواند منفی باشد.',
+            'language.string' => 'زبان باید یک متن باشد.',
+            'page_count.integer' => 'تعداد صفحات باید یک عدد صحیح باشد.',
+            'page_count.min' => 'تعداد صفحات نمی‌تواند منفی باشد.',
+            'type.in' => 'نوع کتاب را مشخص کنید.',
         ];
     }
 }
