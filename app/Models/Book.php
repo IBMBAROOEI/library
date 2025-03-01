@@ -15,8 +15,7 @@ class Book extends Model
         'description',
         'stock_quantity',
         'language',
-        'parent_id', // فیلد ارتباطی با خودش
-        'rating',
+        'parent_id',
         'page_count',
         'related_books',
         'cover_image',

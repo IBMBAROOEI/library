@@ -27,7 +27,6 @@ return new class extends Migration
  $table->foreignId('parent_id')->nullable()->constrained('books')->onDelete('cascade');
 
 
-            $table->decimal('rating', 2, 1)->default(0);
             $table->integer('page_count')->nullable();
             $table->json('related_books')->nullable();
             $table->string('cover_image')->nullable();
