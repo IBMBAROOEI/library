@@ -13,6 +13,7 @@ use App\Http\Middleware\Ratelimit;
 // ::class])->group(function(){
 Route::resource('books', BookController::class);
 
+Route::post('/books/filter', [BookController::class, 'filterbook']);
 // });
 
 Route::middleware([Ratelimit::class])->group(function(){
