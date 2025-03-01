@@ -8,10 +8,28 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     protected $fillable = [
-        "title","author","description","type","price",
-        "published_at"
+
+
+      'title',
+        'author',
+        'description',
+        'stock_quantity',
+        'language',
+        'parent_id', // فیلد ارتباطی با خودش
+        'rating',
+        'page_count',
+        'related_books',
+        'cover_image',
+        'type',
+        'price',
+        'published_at',
     ];
 
+
+
+Public function childern(){
+    return $this->hasMany(Book::class,'parent_id');
+}
 
     protected $casts = [
 
@@ -20,6 +38,11 @@ class Book extends Model
     ];
 
 
-    
+
+public function parent(){
+
+     return $this->belongsTo(Book::class,'parent_id');
+}
+
 
 }

@@ -19,7 +19,18 @@ return new class extends Migration
 
 
             $table->text('description')->nullable();
+             $table->integer('stock_quantity')->default(0);
 
+
+
+    $table->string('language')->nullable();
+ $table->foreignId('parent_id')->nullable()->constrained('books')->onDelete('cascade');
+
+
+            $table->decimal('rating', 2, 1)->default(0);
+            $table->integer('page_count')->nullable();
+            $table->json('related_books')->nullable();
+            $table->string('cover_image')->nullable();
 
 
             $table->enum('type',array_column(BookStatus::cases(),column_key: 'value'))->default('active');

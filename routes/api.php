@@ -9,11 +9,11 @@ use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\Ratelimit;
 
 
-Route::middleware([AuthMiddleware
-::class])->group(function(){
+// Route::middleware([AuthMiddleware
+// ::class])->group(function(){
 Route::resource('books', BookController::class);
 
-});
+// });
 
 Route::middleware([Ratelimit::class])->group(function(){
 
