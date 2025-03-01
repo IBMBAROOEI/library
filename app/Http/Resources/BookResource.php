@@ -25,7 +25,6 @@ class BookResource extends JsonResource
 
         'stock_quantity'=>$this->stock_quantity,
         'language'=>$this->language,
-        'parent_id'=>$this->parent_id,
         'page_count'=>$this->page_count,
 
         'cover_image'=>$this->cover_image,

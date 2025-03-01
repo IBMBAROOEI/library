@@ -24,7 +24,7 @@ return new class extends Migration
 
 
     $table->string('language')->nullable();
- $table->foreignId('parent_id')->nullable()->constrained('books')->onDelete('cascade');
+
 
 
             $table->integer('page_count')->nullable();

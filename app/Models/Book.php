@@ -15,7 +15,6 @@ class Book extends Model
         'description',
         'stock_quantity',
         'language',
-        'parent_id',
         'page_count',
         'related_books',
         'cover_image',
@@ -26,9 +25,7 @@ class Book extends Model
 
 
 
-Public function childern(){
-    return $this->hasMany(Book::class,'parent_id');
-}
+
 
     protected $casts = [
 
@@ -38,10 +35,6 @@ Public function childern(){
 
 
 
-public function parent(){
-
-     return $this->belongsTo(Book::class,'parent_id');
-}
 
 
 }
