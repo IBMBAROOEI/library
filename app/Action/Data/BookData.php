@@ -10,10 +10,10 @@ use Spatie\LaravelData\Attributes\Validation;
 class BookData extends Data
 {
     public function __construct(
-        #[Validation('required|string|max:255')]
+        #[Validation('required|string')]
         public string $title,
 
-        #[Validation('required|string|max:255')]
+        #[Validation('required|string')]
         public string $author,
 
         #[Validation('nullable|string')]
@@ -32,7 +32,8 @@ class BookData extends Data
 
         #[Validation('nullable|integer')]
         public ?int $page_count = null,
-
+   #[Validation('nullable|image|mimes:jpg,jpeg,png,bmp|max:2048')]
+        public ?string $cover_image = null,
 
 		#[Validation('in:' . BookStatus::Active->value . ',' . BookStatus::Deactive->value)]
 		public ?string $type = BookStatus::Active->value
@@ -42,9 +43,10 @@ class BookData extends Data
     public static function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
-            'author' => 'required|string|max:255',
+            'title' => 'required|string',
+            'author' => 'required|string',
             'description' => 'nullable|string',
+            'cover_image' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048', // قوانین تصویر
             'published_at' => 'required|date',
             'price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
@@ -73,6 +75,9 @@ class BookData extends Data
             'page_count.integer' => 'تعداد صفحات باید یک عدد صحیح باشد.',
             'page_count.min' => 'تعداد صفحات نمی‌تواند منفی باشد.',
             'type.in' => 'نوع کتاب را مشخص کنید.',
+              'cover_image.image' => 'تصویر باید از نوع تصویر باشد.',
+            'cover_image.mimes' => 'تصویر باید از نوع jpg، jpeg، png، یا bmp باشد.',
+            'cover_image.max' => 'اندازه تصویر نباید بیشتر از 2048 کیلوبایت باشد.',
         ];
     }
 }

@@ -9,12 +9,13 @@ use App\Action\Book\GetBook;
 use App\Action\Book\UpdateBook;
 use App\Action\Data\BookData;
 use App\Http\Resources\BookResource;
+use App\Traits\FileUpload;
 // use Illuminate\Validation\ValidationException;
 use Spatie\LaravelData\Exceptions\ValidationException;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 
 /**
  * @OA\Info(title="My API", version="8.6")
@@ -24,6 +25,7 @@ class BookController extends Controller
 {
 
 
+use FileUpload;
      /**
      * @OA\Get(
      *     path="/api/books",
@@ -69,13 +71,14 @@ $book=$this->listBook->handel();
 
 
 
-    public function store( BookData $bookData): JsonResponse{
+    public function store( BookData $bookData ,Request $request): JsonResponse{
 
 try{
 
+ $coverImagename=$this->UploadImage($request, 'cover_image');
+  $bookData->cover_image=$coverImagename;
 
 $book=$this->createBook->handle($bookData);
-
 
 return response()->json([
 'message'=>'book creted',
