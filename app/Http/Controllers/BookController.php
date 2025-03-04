@@ -3,21 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Action\Book\CreateBook;
-use App\Action\Book\ListBook;
 use App\Action\Book\DeleteBook;
 use App\Action\Book\GetBook;
+use App\Action\Book\ListBook;
 use App\Action\Book\UpdateBook;
 use App\Action\Data\BookData;
 
-
 use App\Action\Filter\FilterBooks as FilterFilterBooks;
+
 use App\Http\Resources\BookResource;
+use App\Jobs\SendBookCreatedNotification;
 use App\Traits\FileUpload;
 // use Illuminate\Validation\ValidationException;
-use Spatie\LaravelData\Exceptions\ValidationException;
-
 use Illuminate\Http\JsonResponse;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Spatie\LaravelData\Exceptions\ValidationException;
 
 /**
  * @OA\Info(title="My API", version="8.6")
@@ -138,6 +140,9 @@ class BookController extends Controller
 
             $book = $this->createBook->handle($bookData);
 
+SendBookCreatedNotification::dispatch($book->title);
+
+Log::info("jobdispatch");
             return response()->json([
                 'message' => 'book creted',
                 'status' => true,
