@@ -11,6 +11,6 @@ use App\Models\Categorie;
  public function handel(Categorie $Categorie): void{
 
 
-$Categorie->delete();
+        $Categorie->delete();
      }
  }

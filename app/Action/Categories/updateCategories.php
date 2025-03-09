@@ -1,19 +1,17 @@
 <?php
 
 
- namespace App\Action\Book;
- use App\Action\Data\BookData;
-use App\Models\Book;
-
-
+ namespace App\Action\Categories;
+use App\Action\Data\CategoriesData;
+use App\Models\Categorie;
 
 class updateCategories{
 
 
-     public function handel(Book $book,BookData $bookData):Book{
+     public function handel(Categorie $categorie,CategoriesData $categoriesData):Categorie{
 
-  $book->update($bookData->toArray());
-   return $book;
+        $categorie->update($categoriesData->toArray());
+          return $categorie;
 
 
      }

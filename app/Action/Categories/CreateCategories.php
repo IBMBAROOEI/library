@@ -2,13 +2,15 @@
 
 namespace App\Action\Book;
 
- use App\Model\Categorie;
+use App\Action\Data\CategoriesData;
+use App\Models\Categorie as ModelsCategorie;
+
 class createCategorie
 {
-    public function handle(Categorie $categorie): Book
+    public function handle(CategoriesData $categorie): ModelsCategorie
     {
  $data=$categorie->toArray();
 
-        return Categorie::create($data);
+        return ModelsCategorie::create($data);
     }
 }

@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use App\Action\Book\CreateBook;
 use App\Action\Book\DeleteBook;
 use App\Action\Book\GetBook;
-use App\Action\Book\ListBook;
 use App\Action\Book\UpdateBook;
+use App\Action\Book\ListBook;
 use App\Action\Data\BookData;
 
 
 
 use App\Http\Resources\BookResource;
 
-// use Illuminate\Validation\ValidationException;
+
 use Illuminate\Http\JsonResponse;
 
 use Illuminate\Http\Request;
@@ -28,7 +28,7 @@ class CategorieController extends Controller
 {
 
 
-    use FileUpload;
+
     /**
      * @OA\Get(
      *     path="/api/books",
@@ -49,60 +49,11 @@ class CategorieController extends Controller
         protected ListBook $listBook,
         protected UpdateBook $updateBook,
         protected GetBook $getBook,
-        protected FilterFilterBooks $filter
+
 
 
 
     ) {}
-
-
-
-    public function filterbook(Request $request): JsonResponse
-    {
-
-        try {
-        $filters = array_filter($request->only(['title', 'author', 'price_min', 'price_max']));
-
-            if (empty($filters)) {
-                return response()->json([
-                    "message" => "filter  not found",
-                    "status" => false,
-                    "data" => []
-                ], 400);
-            }
-
-        $booksQuery = $this->filter->handle($filters); // باید نام متد را صحیح کنید
-        $books = $booksQuery->get(); // اجرای درخواست و دریافت کالکشن
-
-
-            if ($books->isEmpty()) {
-                return response()->json([
-                    "message" => "books  not found",
-                    "status" => false,
-                    "data" => []
-                ], 404);
-            }
-
-
-
-            return response()->json([
-            "message" => "Books retrieved successfully",
-            "status" => true,
-            "data" => BookResource::collection($books),
-        ], 200);
-
-        } catch (\Exception $e) {
-
-
-            return response()->json([
-                'message' => 'errors',
-                'status' => false,
-                'errors' => $e->getMessage()
-
-            ], 500);
-
-        }
-    }
 
 
 
