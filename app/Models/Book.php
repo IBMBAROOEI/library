@@ -33,7 +33,9 @@ class Book extends Model
         'published_at'=>'date',
     ];
 
-
+public function categories(){
+    return $this->belongsToMany(Categorie::class, 'book_categorie', 'categorie_id','book_id');
+}
 
 
 

@@ -140,6 +140,8 @@ class BookController extends Controller
 
             $book = $this->createBook->handle($bookData);
 
+$cateid=$request->input('categorei_id');
+$book->categories()->attach($cateid);
 SendBookCreatedNotification::dispatch($book->title);
 
 Log::info("jobdispatch");

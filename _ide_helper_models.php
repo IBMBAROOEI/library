@@ -29,6 +29,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon $published_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Categorie> $categories
+ * @property-read int|null $categories_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Book newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Book newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Book query()
@@ -58,6 +60,8 @@ namespace App\Models{
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Book> $books
+ * @property-read int|null $books_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Categorie newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Categorie newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Categorie query()
