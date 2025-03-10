@@ -9,6 +9,7 @@ use Spatie\LaravelData\Attributes\Validation;
 
 class CategoriesData extends Data
 {
+
     public function __construct(
         #[Validation('required|string')]
         public string $name,
@@ -20,10 +21,10 @@ class CategoriesData extends Data
     {
         return [
             'name' => 'required|string',
-
-
 		];
     }
+
+
 
     public static function messages(): array
     {

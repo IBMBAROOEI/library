@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Action\Book\CreateBook;
-use App\Action\Book\DeleteBook;
-use App\Action\Book\GetBook;
-use App\Action\Book\UpdateBook;
-use App\Action\Book\ListBook;
-use App\Action\Data\BookData;
-
-
-
-use App\Http\Resources\BookResource;
-
-
+use App\Action\Categories\CreateCategorie;
+use App\Action\Categories\DeleteCategories;
+use App\Action\Categories\GetCategories;
+use App\Action\Categories\ListCategories;
+use App\Action\Categories\updateCategories;
+use App\Action\Data\CategoriesData;
+use App\Http\Resources\CategorieResource;
+use App\Models\Categorie;
 use Illuminate\Http\JsonResponse;
 
 use Illuminate\Http\Request;
@@ -44,11 +40,11 @@ class CategorieController extends Controller
 
     public function __construct(
 
-        protected CreateBook $createBook,
-        protected DeleteBook $deleteBook,
-        protected ListBook $listBook,
-        protected UpdateBook $updateBook,
-        protected GetBook $getBook,
+        protected CreateCategorie $createCategorie,
+        protected DeleteCategories $deleteCategories,
+        protected ListCategories $ListCategories,
+        protected updateCategories $updateCategories,
+        protected GetCategories $getCategories,
 
 
 
@@ -57,20 +53,14 @@ class CategorieController extends Controller
 
 
 
-
-
-
-
-
-
     public function index(): JsonResponse
     {
 
-        $book = $this->listBook->handel();
+        $cate = $this->ListCategories->handel();
         return response()->json([
             "message" => "ok",
             "status" => true,
-            "data" => BookResource::collection($book),
+            "data" => CategorieResource::collection($cate),
 
         ], 200);
     }
@@ -80,28 +70,17 @@ class CategorieController extends Controller
 
 
 
-    public function store(BookData $bookData, Request $request): JsonResponse
+    public function store(CategoriesData $categoriesData): JsonResponse
     {
 
         try {
-
-            $coverImagename = $this->UploadImage($request, 'cover_image');
-            $bookData->cover_image = $coverImagename;
-
-            $book = $this->createBook->handle($bookData);
-
-SendBookCreatedNotification::dispatch($book->title);
-
-Log::info("jobdispatch");
+            $cate = $this->createCategorie->handle($categoriesData);
             return response()->json([
-                'message' => 'book creted',
+                'message' => 'categories creted',
                 'status' => true,
-                'data' => new BookResource($book),
-
+                'data' => new CategorieResource($cate),
             ], 201);
         } catch (\Exception $e) {
-
-
             return response()->json([
                 'message' => 'errors',
                 'status' => false,
@@ -113,103 +92,91 @@ Log::info("jobdispatch");
 
 
 
-    //  public function show(Book $book):JsonResponse{
+     public function show(Categorie $categorie):JsonResponse{
 
 
-    // try{
-    // $book=$this->getBook->handel($book);
-    // return  response()->json([
+    try{
+      $categorie=$this->getCategories->handel($categorie);
+    return  response()->json([
 
 
-    // 'message'=>'ok',
-    // 'status'=>true,
-    // 'data'=>BookResource::collection($book),
-    // ],200);
+    'message'=>'ok',
+    'status'=>true,
+    'data'=> new CategorieResource($categorie),
+    ],200);
 
 
-    // }
-    // catch(\Exception $e){
-    // return  response()->json([
+    }
+    catch(\Exception $e){
+    return  response()->json([
 
 
-    // 'message'=>'not found',
-    // 'status'=>true,
+    'message'=>'not found',
+    'status'=>false,
 
-    // 'errors'=>$e->getMessage()],500);
+    'errors'=>$e->getMessage()],500);
 
-    // }
+    }
 
-    // }
-
-
-
-    // public function update(Request $request, Book $book): JsonResponse{
+    }
 
 
 
-
-    // try{
-    //             $data = BookData::from($request->validated());
-
-    //             $book = $this->updateBook->handel($book,$data);
-    // return response()->json([
-    // 'message'=>'book update',
-    // 'status'=>true,
-    // 'data'=>BookResource::collection($book),
-
-    // ],200);
+    public function update(Request $request, Categorie $categorie): JsonResponse{
 
 
-    // }
-    // catch(ValidationException $e){
+    try{
+          $data=CategoriesData::from($request);
+
+            $cate = $this->updateCategories->handel($categorie,$data);
+    return response()->json([
+    'message'=>'category update',
+    'status'=>true,
+    'data'=> new CategorieResource($cate),
+
+    ],200);
 
 
-    //     return response()->json([
-    // 'message'=>'validate error',
-    // 'status'=>false,
-    // 'errors'=>$e->validator->errors()->toArray(),
-
-    // ],422);
-
-    //     }
-
-    //     catch(\Exception $e){
+    }
 
 
-    //     return response()->json([
-    // 'message'=>'error',
-    // 'status'=>false,
-    // 'errors'=>$e->getMessage()
-
-    // ],500);
-
-    //     }
+        catch(\Exception $e){
 
 
-    // }
+        return response()->json([
+    'message'=>'error',
+    'status'=>false,
+    'errors'=>$e->getMessage()
+
+    ],500);
+
+        }
+
+
+    }
 
 
 
-    // public function destroy(Book $book): JsonResponse{
+    public function destroy(Categorie $categorie): JsonResponse{
 
-    //     try{
+        try{
 
-    // $this->deleteBook->handel($book);
+    $this->deleteCategories->handel($categorie);
 
-    // return response()->json([204]);
+    return response()->json([204]);
 
-    //     }catch(\Exception $e){
-
-
-
-    //     return response()->json([
-    // 'message'=>'error',
-    // 'status'=>false,
-    // 'errors'=>$e->getMessage()
-
-    // ],500);
+        }catch(\Exception $e){
 
 
-    //     }
-    // }
+
+        return response()->json([
+    'message'=>'error',
+    'status'=>false,
+    'errors'=>$e->getMessage()
+
+    ],500);
+
+
+        }
+    }
 }
