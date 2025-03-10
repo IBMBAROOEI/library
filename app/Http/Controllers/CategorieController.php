@@ -73,21 +73,22 @@ class CategorieController extends Controller
     public function store(CategoriesData $categoriesData): JsonResponse
     {
 
-        try {
+        // try {
             $cate = $this->createCategorie->handle($categoriesData);
+
             return response()->json([
                 'message' => 'categories creted',
                 'status' => true,
                 'data' => new CategorieResource($cate),
             ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'errors',
-                'status' => false,
-                'errors' => $e->getMessage()
+        // } catch (\Exception $e) {
+            // return response()->json([
+            //     'message' => 'errors',
+            //     'status' => false,
+            //     'errors' => $e->getMessage()
 
-            ], 500);
-        }
+            // ], 500);
+        
     }
 
 
