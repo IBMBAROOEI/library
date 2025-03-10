@@ -20,12 +20,11 @@ class CategoriesData extends Data
 
 
 
-    // برای تعریف قوانین و پیام‌های خطا
     public static function rules(): array
     {
         return [
             'name' => 'required|string',
-            'name.unique' => 'required|string|unique:categories,name|name',
+            'name.unique' => 'unique:categories,name|name',
 
 
 
