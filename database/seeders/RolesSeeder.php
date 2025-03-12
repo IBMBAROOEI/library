@@ -1,9 +1,11 @@
 <?php
 
+
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Log;
 
 class RolesSeeder extends Seeder
 {
@@ -12,6 +14,27 @@ class RolesSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        // حذف تمام رکوردها از جدول Roles
+        Role::query()->delete(); // استفاده از query() برای دسترسی به متد delete
+
+        Log::info("Starting to seed roles...");
+
+        $roles = [
+            ['name' => 'admin', 'description' => 'Administrator Role'],
+            ['name' => 'editor', 'description' => 'Editor Role'],
+            ['name' => 'user', 'description' => 'User Role'],
+        ];
+
+        foreach ($roles as $role) {
+
+            Log::info($roles);
+
+            Role::create([
+                'name' => $role['name'],
+                'description' => $role['description']
+            ]);
+        }
+
+        Log::info("Roles seeded successfully.");
     }
 }

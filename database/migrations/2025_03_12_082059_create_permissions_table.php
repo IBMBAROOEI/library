@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('permissions', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique(); // نام مجوز
-            $table->string('lable')->nullable(); //  مجوز
+
+            $table->string('lable')->nullable(); // اشتباه املایی: 'lable' باید به 'label' تغییر کند
+
             $table->timestamps();
         });
     }
