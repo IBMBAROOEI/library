@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Action\Data\UserData;
 use App\Action\User\Login;
+use App\Action\User\Profile;
 use App\Action\User\Register;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
@@ -23,11 +24,27 @@ class AuthController extends Controller
 
     protected Register $register,
     protected Login $login,
+    protected Profile $profile,
 
 
 
     ){}
 
+
+
+  public function profile(){
+
+
+    $user=$this->profile->handel();
+
+        return response()->json([
+            'message' => 'ok',
+            'status' => true,
+            'data' => new UserResource($user),
+        ]);
+
+
+  }
 
 
 public function login(UserData $userdata){
@@ -46,7 +63,6 @@ else{
 
     $token=JWTaUTH::FROMuSER($userr);
 
-
         return response()->json([
             'message'=>'user login',
 'status'=>true,
@@ -57,6 +73,7 @@ else{
             'refresh_token' => Auth::refresh(),
 
         ]);
+
 }
 
 }

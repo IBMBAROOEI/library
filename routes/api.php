@@ -12,16 +12,29 @@ use App\Http\Middleware\Ratelimit;
 
 // Route::middleware([AuthMiddleware
 // ::class])->group(function(){
+
+Route::prefix('books')->group(function(){
 Route::resource('books', BookController::class);
+Route::post('/filter', [BookController::class, 'filterbook']);
+ });
+
+
 
 Route::resource('categorie', CategorieController::class);
 
-Route::post('/books/filter', [BookController::class, 'filterbook']);
-// });
 
-Route::middleware([Ratelimit::class])->group(function(){
 
-Route::post('/user/register', [AuthController::class, 'register']);
-Route::post('/user/login', [AuthController::class, 'login']);
+Route::middleware([AuthMiddleware::class])->group(
+    function () {
+        Route::post('/user/profile', [AuthController::class, 'profile']);
+    }
+);
+
+Route::middleware([Ratelimit::class])->prefix('user')->group(function(){
+
+Route::post('/register', [AuthController::class, 'register']);
+
+
+    Route::post('/login', [AuthController::class, 'login']);
 
 });
