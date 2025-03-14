@@ -15,9 +15,7 @@ class RolesSeeder extends Seeder
     public function run(): void
     {
         // حذف تمام رکوردها از جدول Roles
-        Role::query()->delete(); // استفاده از query() برای دسترسی به متد delete
 
-        Log::info("Starting to seed roles...");
 
         $roles = [
             ['name' => 'admin', 'description' => 'Administrator Role'],
@@ -27,7 +25,6 @@ class RolesSeeder extends Seeder
 
         foreach ($roles as $role) {
 
-            Log::info($roles);
 
             Role::create([
                 'name' => $role['name'],
@@ -35,6 +32,5 @@ class RolesSeeder extends Seeder
             ]);
         }
 
-        Log::info("Roles seeded successfully.");
     }
 }

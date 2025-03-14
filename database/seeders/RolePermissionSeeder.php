@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Log;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -13,9 +14,40 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        // تعریف نقش و مجوزها
-        $rolesPermissions = [
-            'admin' => [
+
+
+        $adminRole = Role::where('name', 'admin')->first();
+        $editorRole = Role::where('name', 'editor')->first();
+        $userRole = Role::where('name', 'user')->first();
+
+
+        if ($adminRole && $editorRole && $userRole) {
+
+
+
+         $adminpermissions = Permission::whereIn('name',[
+
+                'create-books' ,
+                'read-books',
+                'update-books' ,
+                'delete-books' ,
+                'create-categories',
+                'read-categories',
+                'update-categories',
+                'delete-categories',
+                'manage-users' ,
+                'manage-roles' ,
+                'manage-permissions',
+
+            ])->pluck('id');
+         $adminRole->permissions()->syncWithoutDetaching($adminpermissions);
+
+          Log::info($adminpermissions);
+
+
+
+
+            $editorpermissions = Permission::whereIn('name', [
                 'create-books',
                 'read-books',
                 'update-books',
@@ -24,33 +56,29 @@ class RolePermissionSeeder extends Seeder
                 'read-categories',
                 'update-categories',
                 'delete-categories',
-                'manage-users',
-                'manage-roles',
-                'manage-permissions',
-            ],
-            'editor' => [
-                'read-books',
-                'create-books',
-                'update-books',
-                'read-categories',
-                'create-categories',
-                'update-categories',
-            ],
-            'user' => [
-                'read-books',
-                'read-categories',
-            ],
-        ];
 
-        foreach ($rolesPermissions as $roleName => $permissions) {
-            $role = Role::where('name', $roleName)->first();
+            ])->pluck('id');
 
-            foreach ($permissions as $permissionName) {
-                $permission = Permission::where('name', $permissionName)->first();
-                if ($role && $permission) {
-                    $role->permissions()->attach($permission);
-                }
-            }
+
+            $editorRole->permissions()->syncWithoutDetaching($editorpermissions);
+
+            Log::info($editorpermissions);
+
+
+
+
+
+            $userpermissions = Permission::whereIn('name', [
+
+                'read-books',
+                'read-categories',
+            ])->pluck('id');
+
+
+            $userRole->permissions()->syncWithoutDetaching($userpermissions);
+
+            Log::info($userpermissions);
+
         }
     }
 }

@@ -10,7 +10,7 @@ class PermissionsSeeder extends Seeder
 {
     public function run(): void
     {
-        // استفاده از truncate یا query()->delete
+
 
         $permissions = [
             'create-books' => 'Create Books',
