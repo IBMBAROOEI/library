@@ -32,6 +32,7 @@ trait HasRolesAndPermissions{
     public function assignRole(...$role){
 
         $role=is_array($role[0])?$role[0]:$role;
+
         $this->roles()->sync($role,false);
         return $this;
     }
