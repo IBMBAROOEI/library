@@ -10,6 +10,7 @@ use App\Action\Categories\updateCategories;
 use App\Action\Data\CategoriesData;
 use App\Http\Resources\CategorieResource;
 use App\Models\Categorie;
+use Gate;
 use Illuminate\Http\JsonResponse;
 
 use Illuminate\Http\Request;
@@ -73,7 +74,9 @@ class CategorieController extends Controller
     public function store(CategoriesData $categoriesData): JsonResponse
     {
 
-        // try {
+     try {
+            Gate::authorize('create', Categorie::class); //  تغییر در اینجا
+
             $cate = $this->createCategorie->handle($categoriesData);
 
             return response()->json([
@@ -81,14 +84,24 @@ class CategorieController extends Controller
                 'status' => true,
                 'data' => new CategorieResource($cate),
             ], 201);
-        // } catch (\Exception $e) {
-            // return response()->json([
-            //     'message' => 'errors',
-            //     'status' => false,
-            //     'errors' => $e->getMessage()
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => '403',
+                'status' => false,
+                'errors' => $e->getMessage()
 
-            // ], 500);
-        
+            ], 403);
+        }
+
+        catch (\Exception $e) {
+            return response()->json([
+                'message' => 'errors',
+                'status' => false,
+                'errors' => $e->getMessage()
+
+            ], 500);
+
+        }
     }
 
 
@@ -97,7 +110,10 @@ class CategorieController extends Controller
 
 
     try{
-      $categorie=$this->getCategories->handel($categorie);
+
+
+
+            $categorie=$this->getCategories->handel($categorie);
     return  response()->json([
 
 
@@ -162,9 +178,25 @@ class CategorieController extends Controller
 
         try{
 
-    $this->deleteCategories->handel($categorie);
+            Gate::authorize('delete-categories');
+
+            $this->deleteCategories->handel($categorie);
 
     return response()->json([204]);
+        } catch (\Exception $e) {
+
+
+
+            return response()->json([
+                'message' => '403',
+                'status' => false,
+                'errors' => $e->getMessage()
+
+            ], 403);
+
+
+
+
 
         }catch(\Exception $e){
 

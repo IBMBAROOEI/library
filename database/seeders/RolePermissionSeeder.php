@@ -55,7 +55,7 @@ class RolePermissionSeeder extends Seeder
                 'create-categories',
                 'read-categories',
                 'update-categories',
-                'delete-categories',
+             
 
             ])->pluck('id');
 

@@ -8,16 +8,18 @@ use App\Action\Book\GetBook;
 use App\Action\Book\ListBook;
 use App\Action\Book\UpdateBook;
 use App\Action\Data\BookData;
-
 use App\Action\Filter\FilterBooks as FilterFilterBooks;
 
 use App\Http\Resources\BookResource;
 use App\Jobs\SendBookCreatedNotification;
+use App\Models\Book;
 use App\Traits\FileUpload;
 // use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Spatie\LaravelData\Exceptions\ValidationException;
 
@@ -116,6 +118,7 @@ class BookController extends Controller
     public function index(): JsonResponse
     {
 
+       Gate::authorize('viewAny',Book::class);
         $book = $this->listBook->handel();
         return response()->json([
             "message" => "ok",
@@ -130,39 +133,84 @@ class BookController extends Controller
 
 
 
+    // public function store(BookData $bookData, Request $request): JsonResponse
+    // {
+    //     try {
+
+    //         $coverImageName = $this->UploadImage($request, 'cover_image');
+    //         $bookData->cover_image = $coverImageName;
+
+    //         $book = $this->createBook->handle($bookData);
+    //         Gate::allows('create-books',$book);
+
+    //         $categoryIds = $request->input('categorei_id');
+    //         $book->categories()->attach($categoryIds);
+    //         SendBookCreatedNotification::dispatch($book->title);
+
+    //         Log::info("Job dispatched for book: {$book->title}");
+
+    //         return response()->json([
+    //             'message' => 'Book created successfully',
+    //             'status' => true,
+    //             'data' => new BookResource($book),
+    //         ], 201);
+    //     } catch (AuthorizationException $e) {
+    //         return response()->json([
+    //             'message' => 'You do not have permission to create a book.',
+    //             'status' => false,
+    //             'errors' => $e->getMessage()
+    //         ], 403);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'message' => 'An error occurred while creating the book',
+    //             'status' => false,
+    //             'errors' => $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
+
+
     public function store(BookData $bookData, Request $request): JsonResponse
     {
-
         try {
+            // بررسی مجوز ایجاد کتاب
+            Gate::authorize('create', Book::class);
 
-            $coverImagename = $this->UploadImage($request, 'cover_image');
-            $bookData->cover_image = $coverImagename;
+            // بارگذاری تصویر جلد کتاب
+            $coverImageName = $this->UploadImage($request, 'cover_image');
+            $bookData->cover_image = $coverImageName;
 
+            // ایجاد کتاب
             $book = $this->createBook->handle($bookData);
 
-$cateid=$request->input('categorei_id');
-$book->categories()->attach($cateid);
-SendBookCreatedNotification::dispatch($book->title);
+            // اتصال کتاب به دسته بندی‌ها
+            $categoryIds = $request->input('categorei_id');
+            $book->categories()->attach($categoryIds);
 
-Log::info("jobdispatch");
+            // ارسال نوتیفیکیشن
+            SendBookCreatedNotification::dispatch($book->title);
+
+            Log::info("Job dispatched for book: {$book->title}");
+
             return response()->json([
-                'message' => 'book creted',
+                'message' => 'Book created successfully',
                 'status' => true,
                 'data' => new BookResource($book),
-
             ], 201);
-        } catch (\Exception $e) {
-
-
+        } catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'errors',
+                'message' => 'You do not have permission to create a book.',
                 'status' => false,
                 'errors' => $e->getMessage()
-
+            ], 403);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while creating the book',
+                'status' => false,
+                'errors' => $e->getMessage()
             ], 500);
         }
     }
-
 
 
     //  public function show(Book $book):JsonResponse{
@@ -242,26 +290,43 @@ Log::info("jobdispatch");
 
 
 
-    // public function destroy(Book $book): JsonResponse{
+    public function destroy(Book $book): JsonResponse{
 
-    //     try{
+        try{
 
-    // $this->deleteBook->handel($book);
+            Gate::authorize('delete-books');
+    $this->deleteBook->handel($book);
 
-    // return response()->json([204]);
+    return response()->json([204]);
 
-    //     }catch(\Exception $e){
-
-
-
-    //     return response()->json([
-    // 'message'=>'error',
-    // 'status'=>false,
-    // 'errors'=>$e->getMessage()
-
-    // ],500);
+        }
 
 
-    //     }
-    // }
+
+          catch(\Exception $e){
+
+
+
+        return response()->json([
+    'message'=>'fobiden',
+    'status'=>false,
+    'errors'=>$e->getMessage()
+
+    ],403);
+
+        }
+
+        catch(\Exception $e){
+
+
+
+        return response()->json([
+    'message'=>'error',
+    'status'=>false,
+    'errors'=>$e->getMessage()
+
+    ],500);
+
+        }
+    }
 }

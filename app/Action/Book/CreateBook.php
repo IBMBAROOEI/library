@@ -9,9 +9,11 @@ class createBook
 {
     public function handle(BookData $bookData): Book
     {
- $data=$bookData->toArray();
 
-        
+
+        $data=$bookData->toArray();
+
+
         return Book::create($data);
     }
 }

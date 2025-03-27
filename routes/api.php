@@ -11,31 +11,39 @@ use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\Ratelimit;
 
 
-// Route::middleware([AuthMiddleware
-// ::class])->group(function(){
+// Route::middleware([AuthMiddleware::class])->group(function(){
 
-Route::prefix('books')->group(function(){
-Route::resource('books', BookController::class);
+
+Route::resource('book', BookController::class);
+
+
 Route::post('/filter', [BookController::class, 'filterbook']);
- });
-
 
 
 Route::resource('categorie', CategorieController::class);
 
+
+
+
+Route::prefix('role')->group(function(){
+Route::Put('/{user}', [RoleController::class, 'updateRole']);
+Route::get('/{user}', [RoleController::class, 'showRole']);
 Route::post('role', [RoleController::class,'assignroleuser']);
-Route::get('role/{user}', [RoleController::class, 'showRole']);
-Route::Put('role/{user}', [RoleController::class, 'updateRole']);
+
+});
+
+  Route::post('/user/profile', [AuthController::class, 'profile']);
+
+
+// });
 
 
 
 
 
-Route::middleware([AuthMiddleware::class])->group(
-    function () {
-        Route::post('/user/profile', [AuthController::class, 'profile']);
-    }
-);
+
+
+
 
 Route::middleware([Ratelimit::class])->prefix('user')->group(function(){
 
