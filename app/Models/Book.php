@@ -29,6 +29,7 @@ class Book extends Model
 
     protected $casts = [
 
+'published_at'=>'data',
         'type'=>BookStatus::class,
         'published_at'=>'date',
     ];
@@ -36,6 +37,8 @@ class Book extends Model
 public function categories(){
     return $this->belongsToMany(Categorie::class, 'book_categorie', 'categorie_id','book_id');
 }
+
+
 
 
 
