@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Book;
 use App\Models\Categorie;
+use App\Observers\BookObserver;
 use App\Policies\BookPolicy;
 use App\Policies\CategoriePolicy;
 use Illuminate\Support\Facades\Gate;
@@ -23,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+            Book::observe(BookObserver::class);
 
         Gate::before(function ($user, $ability) {
 
