@@ -2,6 +2,8 @@
 
 namespace App\Observers;
 
+use App\Jobs\DeleteBookFromIndex;
+use App\Jobs\IndexBook;
 use App\Models\Book;
 
 class BookObserver
