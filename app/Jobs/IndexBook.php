@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Models\Book;
+use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -14,7 +16,7 @@ class IndexBook implements ShouldQueue
 
 
 
-    public function __construct(protected $book)
+    public function __construct(private Book $book,private Client $client)
     {
     }
 
@@ -23,7 +25,6 @@ class IndexBook implements ShouldQueue
     {
 
 
-$client=ClientBuilder::create()->build();
 
 $param=[
 
@@ -37,10 +38,11 @@ $param=[
 
 try{
 
-
+$this->client->index($param);
+            \Log::error("su to index book{$this->book->id}" );
 
 }catch(\Exception $e){
-    \Log::error('faild to index book'.$e->getMessage());
+    \Log::error("faild to index book{$this->book->id}".$e->getMessage());
     $this->release(5);
 }
     }
