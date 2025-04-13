@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Book;
+use App\Services\ElasticsearchService;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,16 +16,21 @@ class IndexBook implements ShouldQueue
     use Queueable,InteractsWithQueue,Queueable,SerializesModels;
 
 
+ private Book $book;
+ private ElasticsearchService $elasticsearchService;
 
-    public function __construct(private Book $book,private Client $client)
+    public function __construct(Book $book ,ElasticsearchService $elasticsearchService)
     {
+
+        $this->book=$book;
+
+        $this->elasticsearchService=$elasticsearchService;
     }
 
 
     public function handle(): void
     {
 
-        dd("2");
 
 
         $param=[
@@ -39,7 +45,7 @@ class IndexBook implements ShouldQueue
 
 try{
 
-$this->client->index($param);
+$this->elasticsearchService->index($param);
             \Log::error("su to index book{$this->book->id}" );
 
 }catch(\Exception $e){
