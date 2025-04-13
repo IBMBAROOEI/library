@@ -5,17 +5,24 @@ namespace App\Observers;
 use App\Jobs\DeleteBookFromIndex;
 use App\Jobs\IndexBook;
 use App\Models\Book;
+use App\Services\ElasticsearchService;
 use PhpParser\JsonDecoder;
 
 class BookObserver
 {
-    /**
-     * Handle the Book "created" event.
-     */
+
+
+       private ElasticsearchService $elasticsearchService;
+
+
+        public function __construct(ElasticsearchService $elasticsearchService)
+        {
+ $this->elasticsearchService=$elasticsearchService;
+        }
     public function created(Book $book): void
     {
 
-        IndexBook::dispatch($book);
+        IndexBook::dispatch($book,$this->elasticsearchService);
 
     }
 
