@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
 use Illuminate\Console\Command;
 
@@ -18,22 +19,23 @@ class CreateBookIndex extends Command
 
     protected $description = 'Command description';
 
-    /**
-     * Execute the console command.
-     */
+
+
+    public function __construct(private Client $client)
+    {
+
+        parent::__construct();
+    }
+
+
     public function handle()
     {
-         $client=ClientBuilder::create()->build();
 
 
+        $indexparam = [
+            'index' => 'books',
 
-
-
-
-         $indexparam=[
-'index'=>'books',
-
-'body'=>[
+            'body' => [
 
 
 
@@ -50,20 +52,17 @@ class CreateBookIndex extends Command
                 ]
 
 
-]
+            ]
 
-         ];
-
-
+        ];
 
 
-         try{
+        try {
 
-         $response=$client->indices()->create($indexparam);
-
-         }catch(\Exception $e){
-            $this->error('faild create index'.$e->getMessage());
-         }
-
+            $response = $this->client->indices()->create($indexparam);
+            $this->info('index create su'.$response);
+        } catch (\Exception $e) {
+            $this->error('faild create index' . $e->getMessage());
+        }
     }
 }
