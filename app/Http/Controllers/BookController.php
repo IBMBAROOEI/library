@@ -176,7 +176,7 @@ class BookController extends Controller
     {
         try {
             // بررسی مجوز ایجاد کتاب
-            Gate::authorize('create', Book::class);
+            // Gate::authorize('create', Book::class);
 
             // بارگذاری تصویر جلد کتاب
             $coverImageName = $this->UploadImage($request, 'cover_image');

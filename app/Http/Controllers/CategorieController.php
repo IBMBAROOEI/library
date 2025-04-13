@@ -75,7 +75,7 @@ class CategorieController extends Controller
     {
 
      try {
-            Gate::authorize('create', Categorie::class); //  تغییر در اینجا
+            // Gate::authorize('create', Categorie::class); //  تغییر در اینجا
 
             $cate = $this->createCategorie->handle($categoriesData);
 
