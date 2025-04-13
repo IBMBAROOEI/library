@@ -2,8 +2,7 @@
 
 namespace App\Console\Commands;
 
-use Elastic\Elasticsearch\Client;
-use Elastic\Elasticsearch\ClientBuilder;
+use App\Services\ElasticsearchService;
 use Illuminate\Console\Command;
 
 class CreateBookIndex extends Command
@@ -15,54 +14,48 @@ class CreateBookIndex extends Command
      */
     protected $signature = 'app:create-book-index';
 
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Create the Elasticsearch index for books';
 
-
-    protected $description = 'Command description';
-
-
-
-    public function __construct(private Client $client)
+    public function __construct(private ElasticsearchService $elasticsearchService)
     {
-
         parent::__construct();
     }
 
-
-    public function handle()
+    public function handle(): void
     {
+        $indexName = 'books';
 
+        // بررسی وجود ایندکس
+        if ($this->elasticsearchService->indexExists($indexName)) {
+            $this->info("Index '$indexName' already exists.");
+            return;
+        }
 
-        $indexparam = [
-            'index' => 'books',
-
+        $indexParams = [
+            'index' => $indexName,
             'body' => [
-
-
-
                 'mappings' => [
-
                     'properties' => [
                         'title' => [
                             'type' => 'text',
-                            'analyzer' => 'standard'
+                            'analyzer' => 'standard',
                         ],
-
-
-                    ]
-                ]
-
-
-            ]
-
+                        // می‌توانی فیلدهای بیشتری اضافه کنی
+                    ],
+                ],
+            ],
         ];
 
-
         try {
-
-            $response = $this->client->indices()->create($indexparam);
-            $this->info('index create su'.$response);
+            $response = $this->elasticsearchService->getClient()->indices()->create($indexParams);
+            $this->info('Index created successfully: ' . json_encode($response));
         } catch (\Exception $e) {
-            $this->error('faild create index' . $e->getMessage());
+            $this->error('Failed to create index: ' . $e->getMessage());
         }
     }
 }
