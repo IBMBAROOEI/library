@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -16,9 +17,9 @@ class DeleteBookFromIndex implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(protected $bookid)
+    public function __construct(private int $bookid ,private Client $client)
     {
-        $this->bookid=$bookid;
+
     }
 
     /**
@@ -26,7 +27,6 @@ class DeleteBookFromIndex implements ShouldQueue
      */
     public function handle(): void
     {
-        $client = ClientBuilder::create()->build();
 
     $param=[
 
@@ -37,7 +37,9 @@ class DeleteBookFromIndex implements ShouldQueue
 
     try{
 
-    }catch(\Exception $e){
+$this->client->delete($param);
+            \Log::error("book with id job delete book.{$this->bookid}");
+        }catch(\Exception $e){
         \Log::error('faild job delete book'. $e->getMessage());
         $this->release(5);
     }
