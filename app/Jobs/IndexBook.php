@@ -16,7 +16,6 @@ class IndexBook implements ShouldQueue
 
     public function __construct(protected $book)
     {
-         $this->book=$book;
     }
 
 
