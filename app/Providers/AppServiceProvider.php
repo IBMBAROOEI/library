@@ -7,6 +7,7 @@ use App\Models\Categorie;
 use App\Observers\BookObserver;
 use App\Policies\BookPolicy;
 use App\Policies\CategoriePolicy;
+use App\Services\ElasticsearchService;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
 use Illuminate\Support\Facades\Gate;
@@ -28,25 +29,27 @@ class AppServiceProvider extends ServiceProvider
     {
 
 
-$this->app->singleton(Client::class,function($app){
- return ClientBuilder::create()->build();
+$this->app->singleton(ElasticsearchService::class,function($app){
+
+
+ return new ElasticsearchService();
 });
         Book::observe(BookObserver::class);
 
-        Gate::before(function ($user, $ability) {
+//         Gate::before(function ($user, $ability) {
 
-            if($user->hasRole('admin')){
+//             if($user->hasRole('admin')){
 
-             return  true;
+//              return  true;
 
-              }
+//               }
 
 
-return null;
-        });
+// return null;
+//         });
 
-        Gate::policy(Book::class, BookPolicy::class);
-            Gate::policy(Categorie::class, CategoriePolicy::class);
+        // Gate::policy(Book::class, BookPolicy::class);
+        //     Gate::policy(Categorie::class, CategoriePolicy::class);
 
     }
 }

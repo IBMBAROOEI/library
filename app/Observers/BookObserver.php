@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Jobs\DeleteBookFromIndex;
 use App\Jobs\IndexBook;
 use App\Models\Book;
+use PhpParser\JsonDecoder;
 
 class BookObserver
 {
@@ -13,7 +14,9 @@ class BookObserver
      */
     public function created(Book $book): void
     {
+
         IndexBook::dispatch($book);
+
     }
 
     /**

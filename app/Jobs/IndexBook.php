@@ -24,9 +24,10 @@ class IndexBook implements ShouldQueue
     public function handle(): void
     {
 
+        dd("2");
 
 
-$param=[
+        $param=[
 
     'index'=>'books',
     'id'=>$this->book->id,
