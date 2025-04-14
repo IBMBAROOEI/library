@@ -174,7 +174,7 @@ class BookController extends Controller
 
     public function store(BookData $bookData, Request $request): JsonResponse
     {
-        try {
+        // try {
             // بررسی مجوز ایجاد کتاب
             // Gate::authorize('create', Book::class);
 
@@ -199,19 +199,19 @@ class BookController extends Controller
                 'status' => true,
                 'data' => new BookResource($book),
             ], 201);
-        } catch (AuthorizationException $e) {
-            return response()->json([
-                'message' => 'You do not have permission to create a book.',
-                'status' => false,
-                'errors' => $e->getMessage()
-            ], 403);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'An error occurred while creating the book',
-                'status' => false,
-                'errors' => $e->getMessage()
-            ], 500);
-        }
+        // } catch (AuthorizationException $e) {
+        //     return response()->json([
+        //         'message' => 'You do not have permission to create a book.',
+        //         'status' => false,
+        //         'errors' => $e->getMessage()
+        //     ], 403);
+        //  } catch (\Exception $e) {
+        //     return response()->json([
+        //         'message' => 'An error occurred while creating the book',
+        //         'status' => false,
+        //         'errors' => $e->getMessage()
+        //     ], 500);
+        // }
     }
 
 

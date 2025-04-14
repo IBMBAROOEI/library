@@ -17,20 +17,19 @@ class IndexBook implements ShouldQueue
 
 
  private Book $book;
- private ElasticsearchService $elasticsearchService;
 
-    public function __construct(Book $book ,ElasticsearchService $elasticsearchService)
+    public function __construct(Book $book )
     {
 
         $this->book=$book;
 
-        $this->elasticsearchService=$elasticsearchService;
     }
 
 
     public function handle(): void
     {
 
+        $elasticsearchService = app(ElasticsearchService::class);
 
 
         $param=[
@@ -45,7 +44,7 @@ class IndexBook implements ShouldQueue
 
 try{
 
-$this->elasticsearchService->index($param);
+            $elasticsearchService->index($param);
             \Log::error("su to index book{$this->book->id}" );
 
 }catch(\Exception $e){

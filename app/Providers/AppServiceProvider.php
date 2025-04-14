@@ -20,20 +20,28 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+
+        $this->app->singleton(ElasticsearchService::class, function ($app) {
+
+
+            return new ElasticsearchService();
+        });
+
+
+
+        $this->app->bind(BookObserver::class, function ($app) {
+
+
+            return new BookObserver($app->make(ElasticsearchService::class));
+        });
     }
 
-    /**
-     * Bootstrap any application services.
-     */
+
     public function boot(): void
     {
 
 
-$this->app->singleton(ElasticsearchService::class,function($app){
 
-
- return new ElasticsearchService();
-});
         Book::observe(BookObserver::class);
 
 //         Gate::before(function ($user, $ability) {

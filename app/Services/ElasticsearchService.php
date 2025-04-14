@@ -19,6 +19,18 @@ class ElasticsearchService
         return $this->client;
     }
 
+
+
+    public function index(array $params)
+    {
+        try {
+            $response = $this->client->index($params);
+            return $response; // بازگرداندن پاسخ Elasticsearch برای بررسی
+        } catch (\Exception $e) {
+            throw new \Exception("Elasticsearch indexing failed: " . $e->getMessage());
+        }
+    }
+
     public function indexExists(string $indexName)
     {
         return $this->client->indices()->exists(['index' => $indexName]);

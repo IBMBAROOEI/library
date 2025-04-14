@@ -22,7 +22,8 @@ class BookObserver
     public function created(Book $book): void
     {
 
-        IndexBook::dispatch($book,$this->elasticsearchService);
+
+        IndexBook::dispatch($book);
 
     }
 
